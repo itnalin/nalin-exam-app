@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExamApp.Domain.Models
+namespace ExamApp.Models
 {
     public class Course
     {

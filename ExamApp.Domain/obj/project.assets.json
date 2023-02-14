@@ -221,6 +221,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "ExamApp.Models": "1.0.0",
           "Microsoft.EntityFrameworkCore": "7.0.2"
         },
         "compile": {
@@ -228,6 +229,16 @@
         },
         "runtime": {
           "bin/placeholder/ExamApp.Infra.dll": {}
+        }
+      },
+      "ExamApp.Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/ExamApp.Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExamApp.Models.dll": {}
         }
       }
     }
@@ -572,6 +583,11 @@
       "type": "project",
       "path": "../ExamApp.Infra/ExamApp.Infra.csproj",
       "msbuildProject": "../ExamApp.Infra/ExamApp.Infra.csproj"
+    },
+    "ExamApp.Models/1.0.0": {
+      "type": "project",
+      "path": "../ExamApp.Models/ExamApp.Models.csproj",
+      "msbuildProject": "../ExamApp.Models/ExamApp.Models.csproj"
     }
   },
   "projectFileDependencyGroups": {

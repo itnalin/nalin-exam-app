@@ -3,44 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ExamApp.Context;
-using ExamApp.Domain.Models;
+using ExamApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExamApp.Domain.Services;
 
 public interface IStudentsService
 {
-    IEnumerable<Student> GetAllStudents();
-    Task AddStudend(Student student);
-    void Modify(int id, Student student);
+    Task<IEnumerable<Student>> GetAllStudentsAsync();
+    Task<Student?> GetStudentAsync(int id);
+    Task AddStudendAsync(Student student);
+    Task ModifyAsync(int id, Student student);
     IEnumerable<Course> GetCourses();
-    Course GetCourse(Guid id);
-    void ModifyCourse(Guid id, Course course);
+    Task<Course?> GetCourseAsync(Guid id);
+    Task ModifyCourseAsync(Guid id, Course course);
+    Task AddStudentToCourseAsync(int studentId, Guid courseId);
 }
 
 public class StudentsService : IStudentsService
 {
-    private readonly MainContext _dbContext;
-    public IEnumerable<Student> GetAllStudents()
+    private readonly MainContext ctx;
+
+    public StudentsService(MainContext ctx)
     {
-        var ctx = new MainContext();
-        return ctx.Students.ToList();
+        this.ctx = ctx;
     }
 
-    public async Task AddStudend(Student student)
-    {
-        var ctx = new MainContext();
+    public async Task<IEnumerable<Student>> GetAllStudentsAsync()
+    {   
+        return await ctx.Students.ToListAsync();
+    }
 
+    public async Task<Student?> GetStudentAsync(int id)
+    {
+        return await ctx.Students.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task AddStudendAsync(Student student)
+    {
         if (student.Age < 18)
         {
             throw new Exception();
         }
 
-        ctx.Students.AddAsync(student);
-        ctx.SaveChangesAsync();
+        await ctx.Students.AddAsync(student);
+        await ctx.SaveChangesAsync();
     }
 
-    public void Modify(int id, Student student)
+    public async Task ModifyAsync(int id, Student student)
     {
         var ctx = new MainContext();
 
@@ -52,13 +62,11 @@ public class StudentsService : IStudentsService
         student.Id = id;
 
         ctx.Attach(student).State = EntityState.Modified;
-        ctx.SaveChanges();
+        await ctx.SaveChangesAsync();
     }
 
     public IEnumerable<Course> GetCourses()
     {
-        var ctx = new MainContext();
-
         var courses = ctx.Courses
             .ToArrayAsync()
             .Result
@@ -69,22 +77,37 @@ public class StudentsService : IStudentsService
         return courses;
     }
 
-    public Course GetCourse(Guid id)
+    public async Task<Course?> GetCourseAsync(Guid id)
     {
-        var ctx = new MainContext();
-
-        return ctx.Courses
+        return await ctx.Courses
             .Include(x => x.Students)
-            .FirstOrDefault(x => x.Id == id);
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public void ModifyCourse(Guid id, Course course)
+    public async Task ModifyCourseAsync(Guid id, Course course)
     {
-        var ctx = new MainContext();
-
         course.Id = id;
 
         ctx.Attach(course).State = EntityState.Modified;
-        ctx.SaveChanges();
+        await ctx.SaveChangesAsync();
+    }
+
+    public async Task AddStudentToCourseAsync(int studentId, Guid courseId)
+    {
+        var course = await this.GetCourseAsync(courseId);
+        var student = await this.GetStudentAsync(studentId);
+
+        if (course == null)
+        {
+            throw new Exception();
+        }
+
+        if (student == null || student.Age < 18)
+        {
+            throw new Exception();
+        }
+
+        course.Students.Add(student);
+        await this.ModifyCourseAsync(courseId, course);
     }
 }
