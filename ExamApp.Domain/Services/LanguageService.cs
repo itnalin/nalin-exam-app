@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using ExamApp.Context;
+using ExamApp.Domain.Models;
 
-namespace ExamApp.Services;
+namespace ExamApp.Domain.Services;
 
 public class LanguageService
 {

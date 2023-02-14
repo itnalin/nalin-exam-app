@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ExamApp.Context;
+using ExamApp.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExamApp.Services;
+namespace ExamApp.Domain.Services;
 
 public interface IStudentsService
 {
@@ -19,6 +20,7 @@ public interface IStudentsService
 
 public class StudentsService : IStudentsService
 {
+    private readonly MainContext _dbContext;
     public IEnumerable<Student> GetAllStudents()
     {
         var ctx = new MainContext();

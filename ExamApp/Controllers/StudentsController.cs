@@ -17,7 +17,7 @@ public class StudentsController : ControllerBase
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet, Route("All")]
     public IActionResult GetAll()
     {
         try

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using ExamApp.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExamApp.Context;
@@ -37,26 +38,26 @@ public class MainContext : DbContext
     }
 }
 
-public class Course
-{
-    [Key]
-    public Guid Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
+//public class Course
+//{
+//    [Key]
+//    public Guid Id { get; set; }
+//    public string Title { get; set; }
+//    public string Description { get; set; }
 
-    public virtual ICollection<Student> Students { get; set; }
-    public virtual Language Language { get; set; }
-}
+//    public virtual ICollection<Student> Students { get; set; }
+//    public virtual Language Language { get; set; }
+//}
 
-public class Student
-{
-    [Key]
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public int Age { get; set; }
-    public Guid CourseId { get; set; }
+//public class Student
+//{
+//    [Key]
+//    public int Id { get; set; }
+//    public string Name { get; set; }
+//    public int Age { get; set; }
+//    public Guid CourseId { get; set; }
 
-    public virtual Course Course { get; set; }
-}
+//    public virtual Course Course { get; set; }
+//}
 
-public record Language(Guid Id, string Title);
+//public record Language(Guid Id, string Title);

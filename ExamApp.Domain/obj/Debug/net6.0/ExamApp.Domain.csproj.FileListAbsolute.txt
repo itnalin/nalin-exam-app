@@ -1,0 +1,5 @@
+D:\rnd\nalin-exam-app\ExamApp.Domain\obj\Debug\net6.0\ExamApp.Domain.csproj.AssemblyReference.cache
+D:\rnd\nalin-exam-app\ExamApp.Domain\obj\Debug\net6.0\ExamApp.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\rnd\nalin-exam-app\ExamApp.Domain\obj\Debug\net6.0\ExamApp.Domain.AssemblyInfoInputs.cache
+D:\rnd\nalin-exam-app\ExamApp.Domain\obj\Debug\net6.0\ExamApp.Domain.AssemblyInfo.cs
+D:\rnd\nalin-exam-app\ExamApp.Domain\obj\Debug\net6.0\ExamApp.Domain.csproj.CoreCompileInputs.cache

@@ -1,0 +1,3 @@
+- Separated layears as API, Domain and Infra. Moved Services in to Domain and DbContext into Infra.
+- Student, Course and Language are moved to Model in Domain.
+- ASP.NET Core applications are configured using dependency injection. EF Core can be added to this configuration using AddDbContext in the ConfigureServices method of Startup.cs
