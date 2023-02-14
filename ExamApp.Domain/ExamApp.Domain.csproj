@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ExamApp.Infra\ExamApp.Infra.csproj" />
+  </ItemGroup>
+
 </Project>
