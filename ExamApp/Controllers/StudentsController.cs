@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using ExamApp.Context;
 using ExamApp.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,12 @@ public class StudentsController : ControllerBase
         _service = service;
     }
 
-    [HttpGet, Route("All")]
-    public IActionResult GetAll()
+    [HttpGet, Route("all")]
+    public async Task<IActionResult> GetAllAsync()
     {
         try
         {
-            return Ok(_service.GetAllStudents());
+            return Ok(await _service.GetAllStudentsAsync());
         }
         catch (Exception e)
         {
@@ -31,11 +32,11 @@ public class StudentsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Get(int id)
+    public async Task<IActionResult> GetAsync(int id)
     {
         try
         {
-            return Ok(_service.GetAllStudents().First(x => x.Id == id));
+            return Ok(await _service.GetStudentAsync(id));
         }
         catch (Exception e)
         {
@@ -44,11 +45,12 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(Student student)
+    public async Task<IActionResult> CreateAsync(Student student)
     {
         try
         {
-            return Ok(_service.AddStudend(student));
+            await _service.AddStudendAsync(student);
+            return Ok();
         }
         catch (Exception e)
         {
@@ -56,12 +58,12 @@ public class StudentsController : ControllerBase
         }
     }
 
-    [HttpPut, Route("id")]
-    public IActionResult Update(int id, [FromBody]Student student)
+    [HttpPut, Route("{id}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] Student student)
     {
         try
         {
-            _service.Modify(id, student);
+            await _service.ModifyAsync(id, student);
             return Ok();
         }
         catch (Exception e)

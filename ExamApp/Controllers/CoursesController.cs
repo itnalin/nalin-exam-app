@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using ExamApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,34 +15,18 @@ public class CoursesController: ControllerBase
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet, Route("all")]
     public IActionResult GetAll()
     {
         return Ok(_service.GetCourses());
     }
 
     [HttpPost]
-    public IActionResult AddStudentToCourse(int studentId, Guid courseId)
+    [HttpPost, Route("addstudent")]
+    public async Task<IActionResult> AddStudentToCourseAsync(int studentId, Guid courseId)
     {
-        try
-        {
-            var course = _service.GetCourse(courseId);
-            var student = _service.GetAllStudents()
-                .FirstOrDefault(x => x.Id == studentId);
+        await _service.AddStudentToCourseAsync(studentId, courseId);
 
-            if (student == null || student.Age < 18)
-            {
-                throw new Exception();
-            }
-
-            course.Students.Add(student);
-            _service.ModifyCourse(courseId, course);
-
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        return Ok();
     }
 }
