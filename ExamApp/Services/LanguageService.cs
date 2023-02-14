@@ -13,8 +13,7 @@ public class LanguageService
     }
     public IAsyncEnumerable<Language> GetLanguages()
     {
-        //var ctx = new MainContext();
-
+        
         return ctx.Languages.AsAsyncEnumerable();
     }
 }
