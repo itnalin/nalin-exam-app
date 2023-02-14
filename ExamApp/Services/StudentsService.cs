@@ -19,29 +19,30 @@ public interface IStudentsService
 
 public class StudentsService : IStudentsService
 {
-    public IEnumerable<Student> GetAllStudents()
+    private readonly MainContext ctx;
+
+    public StudentsService(MainContext _ctx)
     {
-        var ctx = new MainContext();
+        ctx = _ctx;
+    }
+    public IEnumerable<Student> GetAllStudents()
+    {        
         return ctx.Students.ToList();
     }
 
     public async Task AddStudend(Student student)
     {
-        var ctx = new MainContext();
-
         if (student.Age < 18)
         {
             throw new Exception();
         }
 
-        ctx.Students.AddAsync(student);
-        ctx.SaveChangesAsync();
+        await ctx.Students.AddAsync(student);
+        await ctx.SaveChangesAsync();
     }
 
     public void Modify(int id, Student student)
     {
-        var ctx = new MainContext();
-
         if (student.Age < 18)
         {
             throw new Exception();
@@ -55,8 +56,6 @@ public class StudentsService : IStudentsService
 
     public IEnumerable<Course> GetCourses()
     {
-        var ctx = new MainContext();
-
         var courses = ctx.Courses
             .ToArrayAsync()
             .Result
@@ -69,8 +68,6 @@ public class StudentsService : IStudentsService
 
     public Course GetCourse(Guid id)
     {
-        var ctx = new MainContext();
-
         return ctx.Courses
             .Include(x => x.Students)
             .FirstOrDefault(x => x.Id == id);
@@ -78,8 +75,6 @@ public class StudentsService : IStudentsService
 
     public void ModifyCourse(Guid id, Course course)
     {
-        var ctx = new MainContext();
-
         course.Id = id;
 
         ctx.Attach(course).State = EntityState.Modified;

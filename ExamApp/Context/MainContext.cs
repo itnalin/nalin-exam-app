@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExamApp.Context;
 
 public class MainContext : DbContext
 {
+    public MainContext([NotNullAttribute] DbContextOptions<MainContext> options) : base(options)
+    {
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Uncomment for dev
         //optionsBuilder.UseInMemoryDatabase("Dev");
 
-        // Comment for dev
-        optionsBuilder.UseSqlServer(
-            "server=production.server.com;database=mainDB;trusted_connection=true;username=secureadmin;password=verytrustedpa$$word123");
-        optionsBuilder.EnableSensitiveDataLogging();
+        // Comment for dev        
     }
 
     public DbSet<Student> Students { get; set; }

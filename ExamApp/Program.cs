@@ -6,6 +6,7 @@ using ExamApp.Context;
 using ExamApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,8 +35,14 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddDbContext<MainContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            options.EnableSensitiveDataLogging();
+        });
+
         builder.Services.AddControllers();
-        builder.Services.AddTransient<IStudentsService, StudentsService>();
+        builder.Services.AddScoped<IStudentsService, StudentsService>();
 
         var app = builder.Build();
 

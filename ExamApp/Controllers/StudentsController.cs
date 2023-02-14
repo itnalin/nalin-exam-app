@@ -17,7 +17,7 @@ public class StudentsController : ControllerBase
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet, Route("All")]
     public IActionResult GetAll()
     {
         try
@@ -56,8 +56,8 @@ public class StudentsController : ControllerBase
         }
     }
 
-    [HttpPost]
-    public IActionResult Update(int id, Student student)
+    [HttpPut, Route("id")]
+    public IActionResult Update(int id, [FromBody]Student student)
     {
         try
         {
