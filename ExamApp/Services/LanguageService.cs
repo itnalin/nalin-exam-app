@@ -3,7 +3,11 @@ using ExamApp.Context;
 
 namespace ExamApp.Services;
 
-public class LanguageService
+public interface ILanguageService
+{
+    IAsyncEnumerable<Language> GetLanguages();
+}
+public class LanguageService: ILanguageService
 {
     private readonly MainContext ctx;
 
