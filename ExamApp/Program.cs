@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ExamApp.Context;
 using ExamApp.Domain.Services;
+using ExamApp.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,8 @@ public class Program
               options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddControllers();
-        builder.Services.AddTransient<IStudentsService, StudentsService>();
+        builder.Services.AddScoped<IStudentsService, StudentsService>();
+        builder.Services.AddScoped<ILanguageService, LanguageService>();
 
         var app = builder.Build();
 
@@ -47,6 +49,8 @@ public class Program
         {
             app.UseDeveloperExceptionPage();
         }
+
+        app.ConfigureCustomExceptionMiddleware();
 
         app.UseHttpsRedirection();
         app.UseRouting();
