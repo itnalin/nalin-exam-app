@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using ExamApp.Context;
 using ExamApp.Domain.Services;
-using ExamApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

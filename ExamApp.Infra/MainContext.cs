@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using ExamApp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,9 @@ namespace ExamApp.Context;
 
 public class MainContext : DbContext
 {
+    public MainContext([NotNullAttribute] DbContextOptions<MainContext> options) : base(options)
+    {
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Uncomment for dev

@@ -52,8 +52,6 @@ public class StudentsService : IStudentsService
 
     public async Task ModifyAsync(int id, Student student)
     {
-        var ctx = new MainContext();
-
         if (student.Age < 18)
         {
             throw new Exception();

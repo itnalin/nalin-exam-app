@@ -1,15 +1,25 @@
 ﻿using System.Collections.Generic;
 using ExamApp.Context;
-using ExamApp.Domain.Models;
+using ExamApp.Models;
 
 namespace ExamApp.Domain.Services;
 
-public class LanguageService
+public interface ILanguageService
 {
+    IAsyncEnumerable<Language> GetLanguages();
+}
+
+public class LanguageService: ILanguageService
+{
+    private readonly MainContext ctx;
+
+    public LanguageService(MainContext ctx)
+    {
+        this.ctx = ctx;
+    }
+
     public IAsyncEnumerable<Language> GetLanguages()
     {
-        var ctx = new MainContext();
-
         return ctx.Languages.AsAsyncEnumerable();
     }
 }
