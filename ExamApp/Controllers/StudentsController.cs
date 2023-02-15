@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ExamApp.Context;
 using ExamApp.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamApp.Controllers;
@@ -19,6 +21,8 @@ public class StudentsController : ControllerBase
     }
 
     [HttpGet, Route("all")]
+    [ProducesResponseType(typeof(IEnumerable<Student>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAllAsync()
     {
         try
@@ -32,6 +36,8 @@ public class StudentsController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(Student), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAsync(int id)
     {
         try
@@ -45,6 +51,8 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync(Student student)
     {
         try
@@ -59,6 +67,8 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPut, Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] Student student)
     {
         try
