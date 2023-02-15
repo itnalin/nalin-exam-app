@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ExamApp.Context;
 using ExamApp.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamApp.Controllers;
@@ -17,12 +20,14 @@ public class StudentsController : ControllerBase
         _service = service;
     }
 
-    [HttpGet]
-    public IActionResult GetAll()
+    [HttpGet, Route("all")]
+    [ProducesResponseType(typeof(IEnumerable<Student>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetAllAsync()
     {
         try
         {
-            return Ok(_service.GetAllStudents());
+            return Ok(await _service.GetAllStudentsAsync());
         }
         catch (Exception e)
         {
@@ -31,11 +36,13 @@ public class StudentsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Get(int id)
+    [ProducesResponseType(typeof(Student), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetAsync(int id)
     {
         try
         {
-            return Ok(_service.GetAllStudents().First(x => x.Id == id));
+            return Ok(await _service.GetStudentAsync(id));
         }
         catch (Exception e)
         {
@@ -44,11 +51,14 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(Student student)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateAsync(Student student)
     {
         try
         {
-            return Ok(_service.AddStudend(student));
+            await _service.AddStudendAsync(student);
+            return Ok();
         }
         catch (Exception e)
         {
@@ -56,12 +66,14 @@ public class StudentsController : ControllerBase
         }
     }
 
-    [HttpPost]
-    public IActionResult Update(int id, Student student)
+    [HttpPut, Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] Student student)
     {
         try
         {
-            _service.Modify(id, student);
+            await _service.ModifyAsync(id, student);
             return Ok();
         }
         catch (Exception e)

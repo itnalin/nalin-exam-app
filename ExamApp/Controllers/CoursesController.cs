@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using ExamApp.Context;
 using ExamApp.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamApp.Controllers;
@@ -14,34 +19,21 @@ public class CoursesController: ControllerBase
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet, Route("all")]
+    [ProducesResponseType(typeof(IEnumerable<Course>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult GetAll()
     {
         return Ok(_service.GetCourses());
     }
-
-    [HttpPost]
-    public IActionResult AddStudentToCourse(int studentId, Guid courseId)
+        
+    [HttpPost, Route("addstudent")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddStudentToCourseAsync(int studentId, Guid courseId)
     {
-        try
-        {
-            var course = _service.GetCourse(courseId);
-            var student = _service.GetAllStudents()
-                .FirstOrDefault(x => x.Id == studentId);
+        await _service.AddStudentToCourseAsync(studentId, courseId);
 
-            if (student == null || student.Age < 18)
-            {
-                throw new Exception();
-            }
-
-            course.Students.Add(student);
-            _service.ModifyCourse(courseId, course);
-
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        return Ok();
     }
 }
